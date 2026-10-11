@@ -130,13 +130,19 @@ export function useSystemSounds() {
     setTimeout(() => playTone(160, 'sine', 0.12, 0.03), 100);
   }, [playTone]);
 
+  const playSnap = useCallback(() => {
+    // Chasquido magnético de anclaje
+    playTone(587.33, 'sine', 0.08, 0.06);
+    setTimeout(() => playTone(880, 'sine', 0.08, 0.05), 35);
+  }, [playTone]);
+
   const playWin = useCallback(() => {
-    // Victory fanfare
+    // Fanfarria de victoria
     playTone(523.25, 'sine', 0.15, 0.06);
     setTimeout(() => playTone(659.25, 'sine', 0.15, 0.06), 120);
     setTimeout(() => playTone(783.99, 'sine', 0.15, 0.06), 240);
     setTimeout(() => playTone(1046.50, 'sine', 0.4, 0.08), 360);
   }, [playTone]);
 
-  return { playClick, playOpen, playClose, playError, playLogin, playStartup, playTrash, playWin };
+  return { playClick, playOpen, playClose, playSnap, playError, playLogin, playStartup, playTrash, playWin };
 }

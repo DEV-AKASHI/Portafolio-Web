@@ -26,6 +26,8 @@ export default function NotesApp() {
   const [selectedPost, setSelectedPost] = useState<BlogPost | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
+  const [showMobileList, setShowMobileList] = useState(false);
+
   const getTitle = (post: BlogPost) => (locale === 'en' && post.title_en) ? post.title_en : post.title;
   const getContent = (post: BlogPost) => (locale === 'en' && post.content_en) ? post.content_en : post.content;
   const getSlug = (post: BlogPost) => (locale === 'en' && post.slug_en) ? post.slug_en : post.slug;
@@ -49,14 +51,28 @@ export default function NotesApp() {
   }, []);
 
   return (
-    <div className="flex h-full w-full bg-[#1e1e1e] text-[#d4d4d4] font-sans selection:bg-[#264f78]">
+    <div className="flex h-full w-full bg-[#1e1e1e] text-[#d4d4d4] font-sans selection:bg-[#264f78] relative">
       {/* Sidebar (Explorer) */}
-      <div className="w-64 border-r border-[#333] flex flex-col shrink-0 bg-[#252526]">
-        <div className="p-3 text-xs font-semibold tracking-wider text-[#bbb] uppercase mb-2">
-          Explorador
+      <div className={`
+        ${showMobileList ? 'flex absolute inset-0 z-20' : 'hidden sm:flex'}
+        w-full sm:w-64 border-r border-[#333] flex-col shrink-0 bg-[#252526]
+      `}>
+        <div className="flex items-center justify-between p-3 border-b border-[#333]">
+          <span className="text-xs font-semibold tracking-wider text-[#bbb] uppercase">
+            Explorador
+          </span>
+          {showMobileList && selectedPost && (
+            <button
+              type="button"
+              onClick={() => setShowMobileList(false)}
+              className="sm:hidden text-xs text-[#519aba] font-medium px-2 py-1 bg-white/5 rounded"
+            >
+              Cerrar
+            </button>
+          )}
         </div>
         
-        <div className="flex items-center px-3 py-1 text-sm font-bold bg-[#37373d]">
+        <div className="flex items-center px-3 py-1.5 text-sm font-bold bg-[#37373d]">
           <ChevronRight size={16} className="mr-1 text-[#bbb]" />
           <span>PORTAFOLIO_POSTS</span>
         </div>
@@ -74,8 +90,11 @@ export default function NotesApp() {
               <button
                 key={post.id}
                 type="button"
-                onClick={() => setSelectedPost(post)}
-                className={`w-full flex items-center px-6 py-1 text-sm hover:bg-[#2a2d2e] transition-colors ${
+                onClick={() => {
+                  setSelectedPost(post);
+                  setShowMobileList(false);
+                }}
+                className={`w-full flex items-center px-6 py-2 sm:py-1 text-sm hover:bg-[#2a2d2e] transition-colors ${
                   selectedPost?.id === post.id ? 'bg-[#37373d] text-white' : 'text-[#cccccc]'
                 }`}
               >
@@ -91,15 +110,24 @@ export default function NotesApp() {
         {selectedPost ? (
           <>
             {/* Tabs */}
-            <div className="flex bg-[#2d2d2d] border-b border-[#333] overflow-x-auto [&::-webkit-scrollbar]:hidden">
-              <div className="flex items-center px-4 py-2 bg-[#1e1e1e] border-t-2 border-t-[#007acc] text-[#cccccc] min-w-max">
-                <FileText size={14} className="mr-2 text-[#519aba]" />
-                <span className="text-sm">{getSlug(selectedPost)}.md</span>
+            <div className="flex items-center justify-between bg-[#2d2d2d] border-b border-[#333] overflow-x-auto [&::-webkit-scrollbar]:hidden px-2">
+              <div className="flex items-center">
+                <button
+                  type="button"
+                  onClick={() => setShowMobileList(true)}
+                  className="sm:hidden px-2.5 py-1 text-xs font-semibold text-[#519aba] hover:bg-white/5 rounded flex items-center gap-1 mr-1"
+                >
+                  📁 Explorador
+                </button>
+                <div className="flex items-center px-3 py-1.5 bg-[#1e1e1e] border-t-2 border-t-[#007acc] text-[#cccccc] min-w-max">
+                  <FileText size={14} className="mr-2 text-[#519aba]" />
+                  <span className="text-xs sm:text-sm">{getSlug(selectedPost)}.md</span>
+                </div>
               </div>
             </div>
 
             {/* Markdown Content */}
-            <div className="flex-1 overflow-y-auto p-8 font-sans">
+            <div className="flex-1 overflow-y-auto p-4 sm:p-8 pb-12 font-sans">
               <div className="max-w-3xl mx-auto">
                 <div className="mb-8 pb-4 border-b border-[#333]">
                   <h1 className="text-3xl font-bold text-white mb-2">{getTitle(selectedPost)}</h1>

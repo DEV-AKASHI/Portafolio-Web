@@ -35,15 +35,15 @@ export default function ExperienceApp() {
   };
 
   return (
-    <div className="h-full w-full bg-[#f8f9fa] dark:bg-[#0d0d0d] text-black dark:text-white overflow-y-auto p-8">
+    <div className="h-full w-full bg-[#f8f9fa] dark:bg-[#0d0d0d] text-black dark:text-white overflow-y-auto p-4 sm:p-6 pb-10">
       <div className="max-w-4xl mx-auto">
-        <header className="mb-10 flex items-center gap-4">
-          <div className="w-12 h-12 rounded-2xl bg-blue-500/10 flex items-center justify-center border border-blue-500/20">
-            <Briefcase className="text-blue-500" size={24} />
+        <header className="mb-4 sm:mb-6 flex items-center gap-3 sm:gap-4">
+          <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-2xl bg-blue-500/10 flex items-center justify-center border border-blue-500/20 shrink-0">
+            <Briefcase className="text-blue-500" size={20} />
           </div>
           <div>
-            <h1 className="text-3xl font-bold tracking-tight">{t('experience')}</h1>
-            <p className="text-black/50 dark:text-white/50 mt-1">{isEs ? 'Mi trayectoria profesional y académica.' : 'My professional and academic journey.'}</p>
+            <h1 className="text-xl sm:text-2xl font-bold tracking-tight">{t('experience')}</h1>
+            <p className="text-xs sm:text-sm text-black/50 dark:text-white/50 mt-0.5">{isEs ? 'Mi trayectoria profesional y académica.' : 'My professional and academic journey.'}</p>
           </div>
         </header>
 
@@ -66,7 +66,7 @@ export default function ExperienceApp() {
         )}
         
         {!isLoading && experiences.length > 0 && (
-          <div className="relative border-l-2 border-black/10 dark:border-white/10 ml-4 md:ml-6 pl-8 space-y-12">
+          <div className="relative border-l-2 border-black/10 dark:border-white/10 ml-3 md:ml-5 pl-6 sm:pl-8 space-y-8">
             {experiences.map((exp, idx) => (
               <div key={exp.id} className="relative animate-in fade-in slide-in-from-bottom-4" style={{ animationDelay: `${idx * 100}ms` }}>
                 {/* Timeline dot */}

@@ -389,8 +389,13 @@ export default function ProjectsApp() {
               {currentItems.map(item => (
                 <div 
                   key={item.id}
+                  onClick={() => {
+                    if (typeof window !== 'undefined' && window.matchMedia('(pointer: coarse)').matches) {
+                      handleDoubleClick(item);
+                    }
+                  }}
                   onDoubleClick={() => handleDoubleClick(item)}
-                  className="group flex flex-col items-center gap-2 p-3 rounded-xl hover:bg-blue-50 dark:hover:bg-white/5 cursor-default transition-colors border border-transparent hover:border-blue-200 dark:hover:border-white/10"
+                  className="group flex flex-col items-center gap-2 p-3 rounded-xl hover:bg-blue-50 dark:hover:bg-white/5 active:bg-blue-100 dark:active:bg-white/10 cursor-pointer sm:cursor-default transition-colors border border-transparent hover:border-blue-200 dark:hover:border-white/10 select-none"
                 >
                   <div className="w-16 h-16 flex items-center justify-center relative">
                     {renderIcon(item.type, true)}
@@ -412,8 +417,13 @@ export default function ProjectsApp() {
               {currentItems.map(item => (
                 <div 
                   key={item.id}
+                  onClick={() => {
+                    if (typeof window !== 'undefined' && window.matchMedia('(pointer: coarse)').matches) {
+                      handleDoubleClick(item);
+                    }
+                  }}
                   onDoubleClick={() => handleDoubleClick(item)}
-                  className="grid grid-cols-12 gap-4 items-center p-2 px-4 rounded-lg hover:bg-blue-50 dark:hover:bg-white/5 cursor-default transition-colors border border-transparent hover:border-blue-200 dark:hover:border-white/10"
+                  className="grid grid-cols-12 gap-4 items-center p-2 px-4 rounded-lg hover:bg-blue-50 dark:hover:bg-white/5 active:bg-blue-100 dark:active:bg-white/10 cursor-pointer sm:cursor-default transition-colors border border-transparent hover:border-blue-200 dark:hover:border-white/10 select-none"
                 >
                   <div className="col-span-6 sm:col-span-5 flex items-center gap-3">
                     {renderIcon(item.type, false)}

@@ -19,33 +19,60 @@ CREATE TABLE IF NOT EXISTS public.chat_messages (
     created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
 );
 
--- 3. Otorgar permisos a los roles de la API
-GRANT ALL ON public.live_chats TO anon, authenticated;
-GRANT ALL ON public.chat_messages TO anon, authenticated;
+-- 3. Otorgar permisos de mínimo privilegio
+GRANT SELECT, INSERT ON public.live_chats TO anon;
+GRANT ALL ON public.live_chats TO authenticated;
+
+GRANT SELECT, INSERT ON public.chat_messages TO anon;
+GRANT ALL ON public.chat_messages TO authenticated;
 
 -- 4. Habilitar RLS (Row Level Security)
 ALTER TABLE public.live_chats ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.chat_messages ENABLE ROW LEVEL SECURITY;
 
--- 5. Políticas de Seguridad (Public Access para insertar y leer)
+-- 5. Limpiar políticas previas
 DROP POLICY IF EXISTS "Permitir a todos crear chats" ON public.live_chats;
-CREATE POLICY "Permitir a todos crear chats" ON public.live_chats FOR INSERT TO public WITH CHECK (true);
-
 DROP POLICY IF EXISTS "Permitir a todos leer sus chats" ON public.live_chats;
-CREATE POLICY "Permitir a todos leer sus chats" ON public.live_chats FOR SELECT TO public USING (true);
-
 DROP POLICY IF EXISTS "Permitir a todos actualizar sus chats" ON public.live_chats;
-CREATE POLICY "Permitir a todos actualizar sus chats" ON public.live_chats FOR UPDATE TO public USING (true);
-
 DROP POLICY IF EXISTS "Permitir a todos enviar mensajes" ON public.chat_messages;
-CREATE POLICY "Permitir a todos enviar mensajes" ON public.chat_messages FOR INSERT TO public WITH CHECK (true);
-
 DROP POLICY IF EXISTS "Permitir a todos leer mensajes" ON public.chat_messages;
-CREATE POLICY "Permitir a todos leer mensajes" ON public.chat_messages FOR SELECT TO public USING (true);
+DROP POLICY IF EXISTS "Admin full access live_chats" ON public.live_chats;
+DROP POLICY IF EXISTS "Admin full access chat_messages" ON public.chat_messages;
+DROP POLICY IF EXISTS "Visitor create chat" ON public.live_chats;
+DROP POLICY IF EXISTS "Visitor send message" ON public.chat_messages;
+DROP POLICY IF EXISTS "Visitor read messages" ON public.chat_messages;
+DROP POLICY IF EXISTS "Visitor read own chat" ON public.live_chats;
 
--- 6. Habilitar REALTIME para que funcione el chat en vivo
--- IMPORTANTE: Ve a tu panel de InsForge -> Database -> Replication
--- y activa el "toggle" manualmente para las tablas 'live_chats' y 'chat_messages'.
+-- 6. Políticas de Seguridad seguras
+-- Administrador: control total validado por UID
+CREATE POLICY "Admin full access live_chats" ON public.live_chats
+    FOR ALL TO authenticated
+    USING (auth.uid() = 'dc64568f-659e-4a22-baa0-56a0225bff0c')
+    WITH CHECK (auth.uid() = 'dc64568f-659e-4a22-baa0-56a0225bff0c');
 
--- Refrescar esquema para que la API REST lo detecte
+CREATE POLICY "Admin full access chat_messages" ON public.chat_messages
+    FOR ALL TO authenticated
+    USING (auth.uid() = 'dc64568f-659e-4a22-baa0-56a0225bff0c')
+    WITH CHECK (auth.uid() = 'dc64568f-659e-4a22-baa0-56a0225bff0c');
+
+-- Visitante: creación de sesión y lectura de sesión activa
+CREATE POLICY "Visitor create chat" ON public.live_chats
+    FOR INSERT TO anon, authenticated
+    WITH CHECK (true);
+
+CREATE POLICY "Visitor read own chat" ON public.live_chats
+    FOR SELECT TO anon, authenticated
+    USING (auth.uid() = 'dc64568f-659e-4a22-baa0-56a0225bff0c' OR status = 'active');
+
+-- Visitante: enviar mensajes (únicamente con sender = 'visitor')
+CREATE POLICY "Visitor send message" ON public.chat_messages
+    FOR INSERT TO anon, authenticated
+    WITH CHECK (sender = 'visitor');
+
+-- Visitante: leer mensajes pertenecientes a chats activos
+CREATE POLICY "Visitor read messages" ON public.chat_messages
+    FOR SELECT TO anon, authenticated
+    USING (auth.uid() = 'dc64568f-659e-4a22-baa0-56a0225bff0c' OR chat_id IN (SELECT id FROM public.live_chats WHERE status = 'active'));
+
+-- 7. Habilitar REALTIME para que funcione el chat en vivo
 NOTIFY pgrst, 'reload schema';

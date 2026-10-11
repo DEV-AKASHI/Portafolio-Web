@@ -180,10 +180,38 @@ export default function DesktopShortcuts() {
     }
   };
 
-  const handleItemDoubleClick = (item: ShortcutItem) => {
+  const handleItemDoubleClick = useCallback((item: ShortcutItem) => {
     if (item.appId) handleOpenApp(item.appId);
     else if (item.action) item.action();
-  };
+  }, [handleOpenApp]);
+
+  // Atajos de teclado para el escritorio (Enter para abrir, Escape para deseleccionar)
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (typeof window !== 'undefined' && window.innerWidth < 768) return;
+      const target = e.target as HTMLElement | null;
+      if (target && (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA' || target.isContentEditable)) {
+        return;
+      }
+
+      if (e.key === 'Enter' && selectedIds.size > 0) {
+        const firstId = Array.from(selectedIds)[0];
+        const item = shortcuts.find((s) => s.id === firstId);
+        if (item) {
+          e.preventDefault();
+          handleItemDoubleClick(item);
+        }
+      }
+
+      if (e.key === 'Escape' && selectedIds.size > 0) {
+        e.preventDefault();
+        setSelectedIds(new Set());
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [selectedIds, shortcuts, handleItemDoubleClick]);
 
   // Marquee Selection Logic en el escritorio
   const handleBackdropPointerDown = (e: React.PointerEvent) => {

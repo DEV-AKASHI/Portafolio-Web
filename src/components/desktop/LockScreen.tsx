@@ -47,9 +47,9 @@ export default function LockScreen({ onUnlock }: LockScreenProps) {
       className="absolute inset-0 z-[100] flex flex-col items-center justify-center backdrop-blur-2xl text-white select-none"
     >
       {/* Clock Area */}
-      <div className="absolute top-24 flex flex-col items-center">
-        <h1 className="text-8xl font-light tracking-tight">{timeString}</h1>
-        <p className="text-xl font-medium mt-2 text-white/80 capitalize">{dateString}</p>
+      <div className="absolute top-16 sm:top-24 flex flex-col items-center px-4 text-center">
+        <h1 className="text-6xl sm:text-8xl font-light tracking-tight">{timeString}</h1>
+        <p className="text-lg sm:text-xl font-medium mt-2 text-white/80 capitalize">{dateString}</p>
       </div>
 
       {/* Login Area */}
@@ -60,7 +60,12 @@ export default function LockScreen({ onUnlock }: LockScreenProps) {
         className="flex flex-col items-center mt-20"
       >
         <div className="w-24 h-24 rounded-full bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center mb-6 shadow-2xl overflow-hidden">
-          <User size={48} className="text-white/50" />
+          <img
+            src="/PERFIL.png"
+            alt="Jhonatan Jimenez"
+            className="w-full h-full object-cover"
+            style={{ objectPosition: 'center 42%' }}
+          />
         </div>
         
         <h2 className="text-2xl font-semibold mb-6">{username || 'AKASHI DEV'}</h2>

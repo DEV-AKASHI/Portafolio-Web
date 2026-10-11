@@ -5,6 +5,7 @@ import { useTranslations, useLocale } from 'next-intl';
 import { Code2, Server, Layout, Database, Wrench, Paintbrush, Loader2, Smartphone, Cloud, Terminal, Languages, Blocks, BrainCircuit, TestTube, ShieldCheck, ShoppingCart, GitBranch, Monitor, Network, RotateCcw } from 'lucide-react';
 import { insforge } from '@/lib/insforge';
 import { Icon } from '@iconify/react';
+import { sanitizeSvg } from '@/utils/sanitize';
 
 export default function SkillsApp() {
   const t = useTranslations('Dock');
@@ -60,7 +61,11 @@ export default function SkillsApp() {
 
   const renderIcon = (skill: any) => {
     if (skill.icon?.startsWith('<svg')) {
-      return <div dangerouslySetInnerHTML={{ __html: skill.icon }} className="w-8 h-8 flex items-center justify-center [&>svg]:w-full [&>svg]:h-full" />;
+      const cleanSvg = sanitizeSvg(skill.icon);
+      if (cleanSvg) {
+        return <div dangerouslySetInnerHTML={{ __html: cleanSvg }} className="w-8 h-8 flex items-center justify-center [&>svg]:w-full [&>svg]:h-full" />;
+      }
+      return <Code2 size={24} />;
     }
     if (skill.icon?.includes('://')) {
       return <img src={skill.icon} alt={skill.name} className="w-8 h-8 object-contain" />;
@@ -77,15 +82,15 @@ export default function SkillsApp() {
   const categories = Array.from(new Set(skills.map(s => s.category)));
 
   return (
-    <div className="h-full w-full bg-[#0d0d0d]/90 text-white overflow-y-auto p-8">
+    <div className="h-full w-full bg-[#0d0d0d]/90 text-white overflow-y-auto p-4 sm:p-8 pb-12">
       <div className="max-w-4xl mx-auto">
-        <header className="mb-10 flex items-center gap-4">
-          <div className="w-12 h-12 rounded-2xl bg-blue-500/10 flex items-center justify-center border border-blue-500/20">
-            <Code2 className="text-blue-400" size={24} />
+        <header className="mb-6 sm:mb-10 flex items-center gap-3 sm:gap-4">
+          <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-2xl bg-blue-500/10 flex items-center justify-center border border-blue-500/20 shrink-0">
+            <Code2 className="text-blue-400" size={22} />
           </div>
           <div>
-            <h1 className="text-3xl font-bold tracking-tight">{t('skills')}</h1>
-            <p className="text-white/50 mt-1">{locale === 'es' ? 'Tecnologías y herramientas que domino.' : 'Technologies and tools I master.'}</p>
+            <h1 className="text-2xl sm:text-3xl font-bold tracking-tight">{t('skills')}</h1>
+            <p className="text-xs sm:text-sm text-white/50 mt-0.5 sm:mt-1">{locale === 'es' ? 'Tecnologías y herramientas que domino.' : 'Technologies and tools I master.'}</p>
           </div>
         </header>
 
@@ -102,22 +107,22 @@ export default function SkillsApp() {
         )}
         
         {!isLoading && skills.length > 0 && (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-8">
             {categories.map((category) => {
               const categorySkills = skills.filter(s => s.category === category);
               
               return (
-                <div key={category} className="rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur-sm relative overflow-hidden group">
-                  <div className="flex items-center gap-3 mb-6 relative z-10">
+                <div key={category} className="rounded-2xl border border-white/10 bg-white/5 p-3.5 sm:p-6 backdrop-blur-sm relative overflow-hidden group">
+                  <div className="flex items-center gap-3 mb-4 sm:mb-6 relative z-10">
                     <div className="p-2 rounded-lg bg-white/5 border border-white/10">
                       {getCategoryIcon(category)}
                     </div>
-                    <h2 className="text-lg font-semibold">{category}</h2>
+                    <h2 className="text-base sm:text-lg font-semibold">{category}</h2>
                   </div>
 
-                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 relative z-10">
+                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5 sm:gap-4 relative z-10">
                     {categorySkills.map(skill => (
-                      <div key={skill.id} className="flex flex-col items-center justify-center p-4 bg-black/20 hover:bg-white/10 border border-white/5 hover:border-white/20 rounded-xl transition-all group/skill">
+                      <div key={skill.id} className="flex flex-col items-center justify-center p-2.5 sm:p-4 bg-black/20 hover:bg-white/10 border border-white/5 hover:border-white/20 rounded-xl transition-all group/skill">
                         <div className="w-10 h-10 flex items-center justify-center mb-2 text-white/70 group-hover/skill:text-white transition-colors">
                           {renderIcon(skill)}
                         </div>

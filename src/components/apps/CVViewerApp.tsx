@@ -46,9 +46,7 @@ export default function CVViewerApp() {
     fetchCvUrls();
   }, []);
 
-  const activeUrl = selectedLang === 'es' 
-    ? (cvUrls.es || cvUrls.en) 
-    : (cvUrls.en || cvUrls.es);
+  const previewUrl = `/api/cv?lang=${selectedLang}`;
 
   const handleZoomIn = () => {
     playClick();
@@ -67,12 +65,9 @@ export default function CVViewerApp() {
 
   const handleDownload = () => {
     playClick();
-    if (!activeUrl) return;
     const link = document.createElement('a');
-    link.href = activeUrl;
+    link.href = `/api/cv?lang=${selectedLang}&download=1`;
     link.download = `CV_Jhonatan_Jimenez_${selectedLang.toUpperCase()}.pdf`;
-    link.target = '_blank';
-    link.rel = 'noopener noreferrer';
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -80,9 +75,7 @@ export default function CVViewerApp() {
 
   const handleOpenExternal = () => {
     playClick();
-    if (activeUrl) {
-      window.open(activeUrl, '_blank', 'noopener,noreferrer');
-    }
+    window.open(`/api/cv?lang=${selectedLang}`, '_blank', 'noopener,noreferrer');
   };
 
   return (
@@ -153,8 +146,7 @@ export default function CVViewerApp() {
           <button
             type="button"
             onClick={handleDownload}
-            disabled={!activeUrl}
-            className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-lg bg-emerald-600/90 hover:bg-emerald-500 disabled:opacity-40 disabled:pointer-events-none transition-colors shadow-sm"
+            className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-lg bg-emerald-600/90 hover:bg-emerald-500 transition-colors shadow-sm"
           >
             <Download size={14} />
             <span className="hidden sm:inline">{t('download')}</span>
@@ -162,9 +154,8 @@ export default function CVViewerApp() {
           <button
             type="button"
             onClick={handleOpenExternal}
-            disabled={!activeUrl}
             title={t('openExternal')}
-            className="p-1.5 text-xs font-medium rounded-lg bg-zinc-800 hover:bg-zinc-700 disabled:opacity-40 disabled:pointer-events-none border border-white/10 transition-colors"
+            className="p-1.5 text-xs font-medium rounded-lg bg-zinc-800 hover:bg-zinc-700 border border-white/10 transition-colors"
           >
             <ExternalLink size={14} />
           </button>
@@ -178,7 +169,7 @@ export default function CVViewerApp() {
             <Loader2 size={32} className="animate-spin text-blue-500" />
             <span className="text-xs">Cargando documento...</span>
           </div>
-        ) : activeUrl ? (
+        ) : (
           <div 
             className="w-full h-full max-w-4xl min-h-[500px] flex justify-center transition-transform duration-150"
             style={{
@@ -186,23 +177,17 @@ export default function CVViewerApp() {
               transformOrigin: 'top center',
             }}
           >
-            <iframe
-              src={`${activeUrl}#toolbar=0&navpanes=0`}
-              title="Currículum Vitae PDF"
+            <object
+              data={`${previewUrl}#toolbar=0&navpanes=0`}
+              type="application/pdf"
               className="w-full h-full min-h-[550px] rounded-lg border border-white/10 shadow-2xl bg-zinc-800"
-            />
-          </div>
-        ) : (
-          <div className="flex flex-col items-center justify-center h-full max-w-md mx-auto text-center p-6 gap-3">
-            <div className="w-14 h-14 rounded-2xl bg-amber-500/15 border border-amber-500/30 flex items-center justify-center text-amber-400">
-              <AlertCircle size={28} />
-            </div>
-            <h3 className="text-base font-semibold text-white">
-              {t('noCvTitle')}
-            </h3>
-            <p className="text-xs text-zinc-400 leading-relaxed">
-              {t('noCvDesc')}
-            </p>
+            >
+              <iframe
+                src={`${previewUrl}#toolbar=0&navpanes=0`}
+                title="Currículum Vitae PDF"
+                className="w-full h-full min-h-[550px] rounded-lg border border-white/10 shadow-2xl bg-zinc-800"
+              />
+            </object>
           </div>
         )}
       </div>

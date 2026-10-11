@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { useTranslations, useLocale } from 'next-intl';
 import { Lightbulb, Beaker, Loader2 } from 'lucide-react';
 import { insforge } from '@/lib/insforge';
+import { sanitizeEmbed } from '@/utils/sanitize';
 
 export default function ExperimentsApp() {
   const t = useTranslations('Dock');
@@ -34,15 +35,15 @@ export default function ExperimentsApp() {
   };
 
   return (
-    <div className="h-full w-full bg-[#0d0d0d]/90 text-white overflow-y-auto p-8">
+    <div className="h-full w-full bg-[#0d0d0d]/90 text-white overflow-y-auto p-4 sm:p-8 pb-12">
       <div className="max-w-5xl mx-auto">
-        <header className="mb-10 flex items-center gap-4">
-          <div className="w-12 h-12 rounded-2xl bg-orange-500/10 flex items-center justify-center border border-orange-500/20">
-            <Lightbulb className="text-orange-400" size={24} />
+        <header className="mb-6 sm:mb-10 flex items-center gap-3 sm:gap-4">
+          <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-2xl bg-orange-500/10 flex items-center justify-center border border-orange-500/20 shrink-0">
+            <Lightbulb className="text-orange-400" size={22} />
           </div>
           <div>
-            <h1 className="text-3xl font-bold tracking-tight">{t('experiments')}</h1>
-            <p className="text-white/50 mt-1">{isEs ? 'Exploraciones de UI/UX, animaciones y prototipos.' : 'UI/UX explorations, animations, and prototypes.'}</p>
+            <h1 className="text-2xl sm:text-3xl font-bold tracking-tight">{t('experiments')}</h1>
+            <p className="text-xs sm:text-sm text-white/50 mt-0.5 sm:mt-1">{isEs ? 'Exploraciones de UI/UX, animaciones y prototipos.' : 'UI/UX explorations, animations, and prototypes.'}</p>
           </div>
         </header>
 
@@ -79,10 +80,10 @@ export default function ExperimentsApp() {
                 </div>
                 
                 <div className="flex-1 bg-black/50 p-4 min-h-[250px] relative">
-                  {/* Container for raw embed content. Uses dangerouslySetInnerHTML to run iframe or raw html code. */}
+                  {/* Container for sanitized embed content */}
                   <div 
                     className="w-full h-full flex items-center justify-center [&>iframe]:w-full [&>iframe]:h-full [&>iframe]:rounded-xl [&>iframe]:border-none"
-                    dangerouslySetInnerHTML={{ __html: exp.embed_code }}
+                    dangerouslySetInnerHTML={{ __html: sanitizeEmbed(exp.embed_code) }}
                   />
                 </div>
               </div>

@@ -43,7 +43,7 @@ export default function CertificatesApp() {
   };
 
   return (
-    <div className="w-full min-h-full p-6 md:p-10 bg-white/50 dark:bg-[#121212]/80 transition-colors relative">
+    <div className="w-full h-full overflow-y-auto p-4 sm:p-6 md:p-10 pb-12 bg-white/50 dark:bg-[#121212]/80 transition-colors relative">
       {/* File Viewer Modal */}
       {selectedFile && (
         <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 sm:p-8">
@@ -71,14 +71,14 @@ export default function CertificatesApp() {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="flex items-center gap-4 mb-10"
+          className="flex items-center gap-3 sm:gap-4 mb-6 sm:mb-10"
         >
-          <div className="p-3 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 rounded-2xl">
-            <Award size={32} />
+          <div className="p-2.5 sm:p-3 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 rounded-2xl shrink-0">
+            <Award size={26} />
           </div>
           <div>
-            <h1 className="text-3xl font-bold text-black dark:text-white">{t('certificates')}</h1>
-            <p className="text-black/60 dark:text-white/60 mt-1">{isEs ? 'Validación de habilidades y conocimientos adquiridos.' : 'Validation of acquired skills and knowledge.'}</p>
+            <h1 className="text-2xl sm:text-3xl font-bold text-black dark:text-white">{t('certificates')}</h1>
+            <p className="text-xs sm:text-sm text-black/60 dark:text-white/60 mt-0.5 sm:mt-1">{isEs ? 'Validación de habilidades y conocimientos adquiridos.' : 'Validation of acquired skills and knowledge.'}</p>
           </div>
         </motion.div>
 

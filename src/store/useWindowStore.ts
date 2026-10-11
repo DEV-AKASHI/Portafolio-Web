@@ -8,6 +8,7 @@ export interface WindowState {
   isMinimized: boolean;
   isMaximized: boolean;
   zIndex: number;
+  cascadeIndex?: number;
   width?: number;
   height?: number;
   x?: number;
@@ -33,22 +34,22 @@ interface WindowStore {
 }
 
 const defaultWindows: Record<AppId, WindowState> = {
-  terminal: { id: 'terminal', isOpen: false, isMinimized: false, isMaximized: false, zIndex: 0, width: 800, height: 500 },
-  projects: { id: 'projects', isOpen: false, isMinimized: false, isMaximized: false, zIndex: 0, width: 900, height: 600 },
-  about: { id: 'about', isOpen: false, isMinimized: false, isMaximized: false, zIndex: 0, width: 800, height: 500 },
-  skills: { id: 'skills', isOpen: false, isMinimized: false, isMaximized: false, zIndex: 0, width: 900, height: 600 },
-  contact: { id: 'contact', isOpen: false, isMinimized: false, isMaximized: false, zIndex: 0, width: 800, height: 600 },
-  chat: { id: 'chat', isOpen: false, isMinimized: false, isMaximized: false, zIndex: 0, width: 440, height: 560 },
-  experiments: { id: 'experiments', isOpen: false, isMinimized: false, isMaximized: false, zIndex: 0, width: 1000, height: 650 },
-  browser: { id: 'browser', isOpen: false, isMinimized: false, isMaximized: false, zIndex: 0, width: 1000, height: 650 },
-  certificates: { id: 'certificates', isOpen: false, isMinimized: false, isMaximized: false, zIndex: 0, width: 900, height: 600 },
-  experience: { id: 'experience', isOpen: false, isMinimized: false, isMaximized: false, zIndex: 0, width: 900, height: 650 },
-  settings: { id: 'settings', isOpen: false, isMinimized: false, isMaximized: false, zIndex: 0, width: 700, height: 500 },
-  music: { id: 'music', isOpen: false, isMinimized: false, isMaximized: false, zIndex: 0, width: 340, height: 420 },
-  files: { id: 'files', isOpen: false, isMinimized: false, isMaximized: false, zIndex: 0, width: 750, height: 500 },
-  notes: { id: 'notes', isOpen: false, isMinimized: false, isMaximized: false, zIndex: 0, width: 800, height: 600 },
-  recruiter: { id: 'recruiter', isOpen: false, isMinimized: false, isMaximized: false, zIndex: 0, width: 850, height: 620 },
-  resume: { id: 'resume', isOpen: false, isMinimized: false, isMaximized: false, zIndex: 0, width: 900, height: 650 },
+  terminal: { id: 'terminal', isOpen: false, isMinimized: false, isMaximized: false, zIndex: 0, width: 760, height: 460 },
+  projects: { id: 'projects', isOpen: false, isMinimized: false, isMaximized: false, zIndex: 0, width: 840, height: 480 },
+  about: { id: 'about', isOpen: false, isMinimized: false, isMaximized: false, zIndex: 0, width: 780, height: 460 },
+  skills: { id: 'skills', isOpen: false, isMinimized: false, isMaximized: false, zIndex: 0, width: 820, height: 480 },
+  contact: { id: 'contact', isOpen: false, isMinimized: false, isMaximized: false, zIndex: 0, width: 740, height: 470 },
+  chat: { id: 'chat', isOpen: false, isMinimized: false, isMaximized: false, zIndex: 0, width: 400, height: 480 },
+  experiments: { id: 'experiments', isOpen: false, isMinimized: false, isMaximized: false, zIndex: 0, width: 840, height: 480 },
+  browser: { id: 'browser', isOpen: false, isMinimized: false, isMaximized: false, zIndex: 0, width: 840, height: 480 },
+  certificates: { id: 'certificates', isOpen: false, isMinimized: false, isMaximized: false, zIndex: 0, width: 840, height: 480 },
+  experience: { id: 'experience', isOpen: false, isMinimized: false, isMaximized: false, zIndex: 0, width: 820, height: 480 },
+  settings: { id: 'settings', isOpen: false, isMinimized: false, isMaximized: false, zIndex: 0, width: 680, height: 450 },
+  music: { id: 'music', isOpen: false, isMinimized: false, isMaximized: false, zIndex: 0, width: 340, height: 400 },
+  files: { id: 'files', isOpen: false, isMinimized: false, isMaximized: false, zIndex: 0, width: 750, height: 460 },
+  notes: { id: 'notes', isOpen: false, isMinimized: false, isMaximized: false, zIndex: 0, width: 780, height: 480 },
+  recruiter: { id: 'recruiter', isOpen: false, isMinimized: false, isMaximized: false, zIndex: 0, width: 820, height: 490 },
+  resume: { id: 'resume', isOpen: false, isMinimized: false, isMaximized: false, zIndex: 0, width: 840, height: 490 },
 };
 
 let highestZIndex = 1;
@@ -65,10 +66,22 @@ export const useWindowStore = create<WindowStore>((set) => ({
 
   openWindow: (id) => set((state) => {
     highestZIndex += 1;
+    // Desfase en cascada para no apilar ventanas exactamente en la misma coordenada
+    const currentOpen = Object.values(state.windows).filter(w => w.isOpen && !w.isMinimized && w.id !== id);
+    const cascadeIndex = currentOpen.length % 5;
+
     return {
       windows: {
         ...state.windows,
-        [id]: { ...state.windows[id], isOpen: true, isMinimized: false, zIndex: highestZIndex }
+        [id]: { 
+          ...state.windows[id], 
+          isOpen: true, 
+          isMinimized: false, 
+          zIndex: highestZIndex,
+          cascadeIndex: state.windows[id].isOpen && state.windows[id].cascadeIndex !== undefined 
+            ? state.windows[id].cascadeIndex 
+            : cascadeIndex
+        }
       },
       activeWindow: id
     };

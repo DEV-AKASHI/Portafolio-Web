@@ -61,7 +61,7 @@ export default function TopMenuBar() {
   };
 
   return (
-    <div className="absolute top-0 left-0 right-0 h-8 bg-white/40 dark:bg-black/40 backdrop-blur-xl border-b border-black/5 dark:border-white/10 z-50 flex items-center px-4 text-xs font-medium tracking-wide text-black/90 dark:text-white/90 transition-colors duration-500">
+    <div className="absolute top-0 left-0 right-0 h-8 bg-white/40 dark:bg-black/40 backdrop-blur-xl border-b border-black/5 dark:border-white/10 z-50 flex items-center px-4 text-xs font-medium tracking-wide text-black/90 dark:text-white/90 transition-colors duration-500 pointer-events-auto select-none">
       <div className="flex items-center gap-3 sm:gap-4">
         <span className="font-bold flex items-center gap-2 cursor-default px-2">
           <span>AKASHI DEV</span>

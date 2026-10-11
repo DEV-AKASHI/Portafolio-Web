@@ -52,18 +52,18 @@ export default function DesktopWidgets() {
   return (
     <aside 
       aria-label="Desktop Information Widgets"
-      className="absolute top-12 right-4 md:right-8 z-0 hidden lg:flex flex-col gap-3.5 w-64 select-none pointer-events-auto"
+      className="absolute top-12 right-2 sm:right-4 lg:right-8 z-0 hidden min-[480px]:flex flex-col gap-2.5 sm:gap-3.5 w-56 sm:w-60 lg:w-64 select-none pointer-events-auto"
     >
       {/* Widget 1: Perfil & Disponibilidad en vivo */}
       <motion.div
         initial={{ opacity: 0, y: -10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.3 }}
-        className="rounded-2xl bg-zinc-900/40 dark:bg-black/30 backdrop-blur-xl border border-white/10 p-4 shadow-xl text-white space-y-3"
+        className="rounded-2xl bg-zinc-900/40 dark:bg-black/30 backdrop-blur-xl border border-white/10 p-3.5 sm:p-4 shadow-xl text-white space-y-3"
       >
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <div className="relative">
+        <div className="flex items-center justify-between gap-1.5">
+          <div className="flex items-center gap-2 min-w-0">
+            <div className="relative shrink-0">
               <div className="w-9 h-9 rounded-xl overflow-hidden border border-emerald-500/40 shadow-md bg-zinc-800 shrink-0">
                 <img
                   src="/PERFIL.png"
@@ -74,14 +74,22 @@ export default function DesktopWidgets() {
               </div>
               <span className="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-emerald-500 rounded-full border-2 border-zinc-900 animate-pulse" />
             </div>
-            <div>
-              <div className="text-xs font-bold leading-tight">Jhonatan J.</div>
-              <div className="text-[10px] text-zinc-400 font-medium">@SCARLXRD-1</div>
+            <div className="min-w-0">
+              <div className="text-xs font-bold leading-tight truncate">Jhonatan J.</div>
+              <div className="text-[10px] text-zinc-400 font-medium whitespace-nowrap">@SCARLXRD-1</div>
             </div>
           </div>
-          <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-emerald-500/15 border border-emerald-500/30 text-emerald-400">
+          <button
+            type="button"
+            onClick={() => {
+              playClick();
+              openWindow('recruiter');
+            }}
+            className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-emerald-500/15 border border-emerald-500/30 text-emerald-400 shrink-0 hover:bg-emerald-500/25 transition-all cursor-pointer hover:scale-105 active:scale-95"
+            title={isEs ? 'Abrir Modo Reclutador' : 'Open Recruiter Mode'}
+          >
             {isEs ? 'Disponible' : 'Available'}
-          </span>
+          </button>
         </div>
 
         <div className="pt-2 border-t border-white/5 space-y-1.5 text-[11px] text-zinc-300">

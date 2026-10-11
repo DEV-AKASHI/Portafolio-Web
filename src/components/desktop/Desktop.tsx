@@ -19,6 +19,7 @@ import DesktopWidgets from './DesktopWidgets';
 import { useContextMenuStore } from '@/store/useContextMenuStore';
 import { useAuthStore } from '@/store/useAuthStore';
 import { useSettingsStore } from '@/store/useSettingsStore';
+import MobileOS from '../mobile/MobileOS';
 
 export default function Desktop() {
   const windows = useWindowStore((state) => state.windows);
@@ -61,6 +62,7 @@ export default function Desktop() {
 
   const handleContextMenu = (e: React.MouseEvent) => {
     e.preventDefault();
+    if (typeof window !== 'undefined' && window.innerWidth < 768) return;
     openMenu(e.clientX, e.clientY);
   };
 
@@ -116,32 +118,41 @@ export default function Desktop() {
       <ContextMenu />
       <Spotlight />
 
-      {/* Desktop Shortcuts & Widgets Layer */}
-      <DesktopShortcuts />
-      <DesktopWidgets />
+      {/* Capa Desktop OS (Pantallas >= 768px) */}
+      <div className="hidden md:block absolute inset-0 pointer-events-none">
+        <DesktopShortcuts />
+        <DesktopWidgets />
 
-      {/* Window Manager Layer - container passes clicks through, windows catch them */}
-      <div className="absolute inset-0 z-10 pointer-events-none">
-        <WindowManager />
+        {/* Window Manager Layer */}
+        <div className="absolute inset-0 z-10 pointer-events-none">
+          <WindowManager />
+        </div>
+
+        {/* Top Menu Bar */}
+        <div className="pointer-events-auto">
+          <TopMenuBar />
+        </div>
+
+        {/* Dock Layer */}
+        <motion.div 
+          animate={{ 
+            y: shouldHideDock ? 110 : 0,
+            opacity: shouldHideDock ? 0 : 1,
+            scale: shouldHideDock ? 0.95 : 1
+          }}
+          transition={{ type: 'spring', stiffness: 260, damping: 26 }}
+          className={`absolute bottom-4 left-0 right-0 z-50 flex justify-center ${
+            shouldHideDock ? 'pointer-events-none' : 'pointer-events-auto'
+          }`}
+        >
+          <Dock />
+        </motion.div>
       </div>
 
-      {/* Top Menu Bar */}
-      <TopMenuBar />
-
-      {/* Dock Layer */}
-      <motion.div 
-        animate={{ 
-          y: shouldHideDock ? 110 : 0,
-          opacity: shouldHideDock ? 0 : 1,
-          scale: shouldHideDock ? 0.95 : 1
-        }}
-        transition={{ type: 'spring', stiffness: 260, damping: 26 }}
-        className={`absolute bottom-4 left-0 right-0 z-50 flex justify-center ${
-          shouldHideDock ? 'pointer-events-none' : 'pointer-events-auto'
-        }`}
-      >
-        <Dock />
-      </motion.div>
+      {/* Capa Mobile OS (Smartphones < 768px) */}
+      <div className="md:hidden absolute inset-0 z-20 pointer-events-auto">
+        <MobileOS />
+      </div>
     </div>
   );
 }

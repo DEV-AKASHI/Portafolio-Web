@@ -5,6 +5,7 @@ import { Code2, Trash2, Loader2, Save } from 'lucide-react';
 import { insforge } from '@/lib/insforge';
 import { toast } from 'react-toastify';
 import { Icon } from '@iconify/react';
+import { sanitizeSvg } from '@/utils/sanitize';
 
 export default function AdminSkills() {
   const [skills, setSkills] = useState<any[]>([]);
@@ -118,7 +119,11 @@ export default function AdminSkills() {
 
   const renderIcon = (skill: any) => {
     if (skill.icon?.startsWith('<svg')) {
-      return <div dangerouslySetInnerHTML={{ __html: skill.icon }} className="w-5 h-5 flex items-center justify-center [&>svg]:w-full [&>svg]:h-full" />;
+      const cleanSvg = sanitizeSvg(skill.icon);
+      if (cleanSvg) {
+        return <div dangerouslySetInnerHTML={{ __html: cleanSvg }} className="w-5 h-5 flex items-center justify-center [&>svg]:w-full [&>svg]:h-full" />;
+      }
+      return <Code2 size={20} />;
     }
     if (skill.icon?.includes('://')) {
       return <img src={skill.icon} alt={skill.name} className="w-5 h-5 object-contain" />;

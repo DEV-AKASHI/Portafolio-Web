@@ -169,7 +169,7 @@ export default function RecruiterApp() {
   ];
 
   return (
-    <div className="flex flex-col h-full w-full overflow-y-auto bg-zinc-950 text-white select-none p-4 sm:p-5 space-y-4">
+    <div className="flex flex-col h-full w-full overflow-y-auto bg-zinc-950 text-white select-none p-4 sm:p-5 pb-12 sm:pb-6 space-y-4">
       {/* Header Ejecutivo Conciso */}
       <div className="rounded-2xl bg-zinc-900/80 border border-white/10 p-4 sm:p-5 shadow-xl backdrop-blur-md space-y-3">
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">

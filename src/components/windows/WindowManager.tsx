@@ -22,7 +22,7 @@ import NotesApp from '../apps/NotesApp';
 import RecruiterApp from '../apps/RecruiterApp';
 import CVViewerApp from '../apps/CVViewerApp';
 
-const APP_COMPONENTS: Record<AppId, React.ComponentType<any>> = {
+export const APP_COMPONENTS: Record<AppId, React.ComponentType<any>> = {
   terminal: TerminalApp,
   about: AboutApp,
   projects: ProjectsApp,

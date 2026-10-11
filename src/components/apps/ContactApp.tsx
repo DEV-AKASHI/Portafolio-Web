@@ -91,11 +91,11 @@ export default function ContactApp() {
   };
 
   return (
-    <div className="h-full w-full bg-[#0d0d0d]/90 text-white overflow-y-auto p-4 sm:p-8">
+    <div className="h-full w-full bg-[#0d0d0d]/90 text-white overflow-y-auto p-4 sm:p-8 pb-12">
       <div className="max-w-3xl mx-auto">
-        <header className="mb-10 flex items-center gap-4">
-          <div className="w-12 h-12 rounded-2xl bg-purple-500/10 flex items-center justify-center border border-purple-500/20">
-            <Mail className="text-purple-400" size={24} />
+        <header className="mb-6 sm:mb-10 flex items-center gap-3 sm:gap-4">
+          <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-2xl bg-purple-500/10 flex items-center justify-center border border-purple-500/20 shrink-0">
+            <Mail className="text-purple-400" size={22} />
           </div>
           <div>
             <h1 className="text-3xl font-bold tracking-tight">{t('contact')}</h1>

@@ -3,7 +3,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { useTranslations } from 'next-intl';
-import { Terminal, FolderOpen, User, Code2, Mail, Lightbulb, Globe, Award, Briefcase, Settings, MessageCircle, FileText } from 'lucide-react';
+import { Terminal, FolderOpen, User, Code2, Mail, Lightbulb, Globe, Award, Briefcase, Settings, MessageCircle, FileText, Sparkles } from 'lucide-react';
 import { AppId, useWindowStore } from '@/store/useWindowStore';
 import { useSystemSounds } from '@/hooks/useSystemSounds';
 
@@ -63,6 +63,7 @@ export default function Dock() {
   };
 
   const apps = [
+    { id: 'recruiter' as AppId, label: t('recruiter'), icon: <Sparkles size={22} className="text-emerald-400" strokeWidth={1.5} /> },
     { id: 'projects' as AppId, label: t('projects'), icon: <FolderOpen size={22} strokeWidth={1.5} /> },
     { id: 'experience' as AppId, label: t('experience'), icon: <Briefcase size={22} strokeWidth={1.5} /> },
     { id: 'about' as AppId, label: t('about'), icon: <User size={22} strokeWidth={1.5} /> },
