@@ -86,7 +86,7 @@ export default function TerminalApp() {
         output = <span className="text-gray-300">{args}</span>;
         break;
       case 'github':
-        window.open('https://github.com/SCARLXRD-1', '_blank');
+        window.open('https://github.com/DEV-AKASHI', '_blank');
         output = <span className="text-emerald-400">Opening GitHub...</span>;
         break;
       case 'theme':

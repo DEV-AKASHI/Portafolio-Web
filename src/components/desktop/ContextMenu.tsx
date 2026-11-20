@@ -59,7 +59,7 @@ export default function ContextMenu() {
         openWindow('projects');
         break;
       case 'github':
-        window.open('https://github.com/SCARLXRD-1/Portafolio-Web', '_blank');
+        window.open('https://github.com/DEV-AKASHI/Portafolio-Web', '_blank');
         break;
     }
   };

@@ -342,7 +342,7 @@ export default function RecruiterApp() {
             </button>
             <button
               type="button"
-              onClick={() => window.open('https://github.com/SCARLXRD-1', '_blank', 'noopener,noreferrer')}
+              onClick={() => window.open('https://github.com/DEV-AKASHI', '_blank', 'noopener,noreferrer')}
               className="flex items-center justify-center gap-1.5 py-2 px-3.5 rounded-xl bg-zinc-800 hover:bg-zinc-700 border border-white/10 text-xs font-semibold text-zinc-200 transition-colors"
             >
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">

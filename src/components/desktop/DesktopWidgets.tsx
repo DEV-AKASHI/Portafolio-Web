@@ -76,7 +76,7 @@ export default function DesktopWidgets() {
             </div>
             <div className="min-w-0">
               <div className="text-xs font-bold leading-tight truncate">Jhonatan J.</div>
-              <div className="text-[10px] text-zinc-400 font-medium whitespace-nowrap">@SCARLXRD-1</div>
+              <div className="text-[10px] text-zinc-400 font-medium whitespace-nowrap">@DEV-AKASHI</div>
             </div>
           </div>
           <button
@@ -137,7 +137,7 @@ export default function DesktopWidgets() {
             <span>GitHub Live</span>
           </div>
           <a
-            href="https://github.com/SCARLXRD-1"
+            href="https://github.com/DEV-AKASHI"
             target="_blank"
             rel="noopener noreferrer"
             className="text-[10px] text-blue-400 hover:text-blue-300 flex items-center gap-0.5 transition-colors"

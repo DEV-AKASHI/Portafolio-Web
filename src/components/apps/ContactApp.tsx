@@ -186,7 +186,7 @@ export default function ContactApp() {
               <h3 className="text-lg font-semibold mb-4 text-white/90">{isEs ? 'Redes Sociales' : 'Social Networks'}</h3>
               <div className="space-y-3">
                 {[
-                  { icon: <GithubIcon size={18} />, label: 'GitHub', href: 'https://github.com/SCARLXRD-1' },
+                  { icon: <GithubIcon size={18} />, label: 'GitHub', href: 'https://github.com/DEV-AKASHI' },
                   { icon: <LinkedinIcon size={18} />, label: 'LinkedIn', href: 'https://www.linkedin.com/in/jhonatan-jimenez-ak/' },
                   { icon: <TwitterIcon size={18} />, label: 'Twitter', href: '#' }
                 ].map((social, idx) => (

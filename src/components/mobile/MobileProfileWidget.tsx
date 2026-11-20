@@ -68,7 +68,7 @@ export default function MobileProfileWidget() {
               Flutter & Full Stack Dev
             </p>
             <p className="text-[10px] text-zinc-400 font-mono">
-              @SCARLXRD-1
+              @DEV-AKASHI
             </p>
           </div>
         </div>

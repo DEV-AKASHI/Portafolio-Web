@@ -116,7 +116,7 @@ export default function Dock() {
             <path d="M9 18c-4.51 2-5-2-7-2" />
           </svg>
         }
-        onClick={() => window.open('https://github.com/SCARLXRD-1', '_blank', 'noopener,noreferrer')}
+        onClick={() => window.open('https://github.com/DEV-AKASHI', '_blank', 'noopener,noreferrer')}
       />
     </motion.div>
   );
